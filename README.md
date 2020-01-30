@@ -8,4 +8,4 @@
 </ul>
 
 <h2 align="center">Sobre esse desafio:</h2>
-<p>Simples aplicação node baseada em express para ficar os conceitos de CRUD.</p>
+<p align="center">Simples aplicação node baseada em express para ficar os conceitos de CRUD.</p>
