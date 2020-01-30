@@ -3,6 +3,26 @@ const server = express();
 
 server.use(express.json());
 
+let aux = 0; 
+
+// Middlewares
+server.use((req, res, next) => {
+  next();
+  aux++;
+  console.log(`Total de requisições: ${aux}`);
+});
+
+function verifyId(req, res, next){
+  const { id } = req.params;
+  for(let i = 0; i < projects.length; i++){
+    if(projects[i].id == id){
+      return next();
+    }
+  }
+  return res.json({message: "Id does not exist."});
+}
+
+// CRUD
 const projects = [
   {
     "id": 1,
@@ -37,7 +57,7 @@ server.post('/projects', (req, res) => {
   return res.json({id, title});
 });
 
-server.post('/projects/:id/tasks', (req, res) =>{
+server.post('/projects/:id/tasks', verifyId, (req, res) =>{
   const { id } = req.params;
   const { title } = req.body;
 
@@ -50,7 +70,7 @@ server.post('/projects/:id/tasks', (req, res) =>{
   return res.send();
 });
 
-server.put('/projects/:id', (req, res) => {
+server.put('/projects/:id', verifyId, (req, res) => {
   const { id } = req.params;
   
   let project = null;
@@ -68,7 +88,7 @@ server.put('/projects/:id', (req, res) => {
   return res.json(project);
 });
 
-server.delete('/projects/:id', (req, res) => {
+server.delete('/projects/:id', verifyId, (req, res) => {
  const { id } = req.params;
  for(let i = 0; i < projects.length; i++){
     if(projects[i]['id'] == id){
