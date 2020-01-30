@@ -1,17 +1,17 @@
+// Importações
 const express = require('express');
-const server = express();
 
+// Informações do servidor
+const server = express();
 server.use(express.json());
 
-let aux = 0; 
-
-// Middlewares
+// Middleware: Contar número de requisições
 server.use((req, res, next) => {
-  next();
-  aux++;
-  console.log(`Total de requisições: ${aux}`);
+  console.count("Número de requisições");
+  return next();
 });
 
+// Middleware: Verificar existência do ID requisitado 
 function verifyId(req, res, next){
   const { id } = req.params;
   for(let i = 0; i < projects.length; i++){
@@ -19,44 +19,32 @@ function verifyId(req, res, next){
       return next();
     }
   }
-  return res.json({message: "Id does not exist."});
+  return res.status(400).json({error: "ID does not exist."});
 }
 
 // CRUD
-const projects = [
-  {
-    "id": 1,
-    "title": "Terceira :)",
-    "tasks": []
-  },
-  {
-    "id": 2,
-    "title": "Terceira :)",
-    "tasks": []
-  },
-  {
-    "id": 3,
-    "title": "Terceira :)",
-    "tasks": []
-  }
-];
+const projects = [];
 
+// Selecionar todos os projetos
 server.get('/projects', (req, res) =>{
   return res.json(projects);
 });
 
+// Inserir novos projetos
 server.post('/projects', (req, res) => {
   let { id, title } = req.body;
-  projects.push(
-    {
-      id,
-      title,
-      tasks: []
-    }
-  );
-  return res.json({id, title});
+  
+  const project = {
+    id,
+    title,
+    tasks: []
+  } 
+  projects.push(project);
+
+  return res.json(project);
 });
 
+// Inserir novas tasks nos projetos
 server.post('/projects/:id/tasks', verifyId, (req, res) =>{
   const { id } = req.params;
   const { title } = req.body;
@@ -70,6 +58,7 @@ server.post('/projects/:id/tasks', verifyId, (req, res) =>{
   return res.send();
 });
 
+// Inserir novos projetos
 server.put('/projects/:id', verifyId, (req, res) => {
   const { id } = req.params;
   
@@ -88,6 +77,7 @@ server.put('/projects/:id', verifyId, (req, res) => {
   return res.json(project);
 });
 
+// Deletar projetos
 server.delete('/projects/:id', verifyId, (req, res) => {
  const { id } = req.params;
  for(let i = 0; i < projects.length; i++){
@@ -98,4 +88,5 @@ server.delete('/projects/:id', verifyId, (req, res) => {
   return res.json(projects);
 });
 
+// Porta do servidor
 server.listen(3333);
