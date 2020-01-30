@@ -1,0 +1,23 @@
+{
+  "name": "desafio-01-gostack",
+  "version": "1.0.0",
+  "description": "Desafio 01 do bootcamp da rocketseat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdonangelo"
+  },
+  "keywords": [
+    "GoStack",
+    "Rocketseat",
+    "Node"
+  ],
+  "author": "Matheus Lourenço Donangelo",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
